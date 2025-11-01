@@ -1,0 +1,9 @@
+{
+  "name": "tampermonkey-claimed-remaining",
+  "version": "1.0.0",
+  "description": "Tampermonkey userscript that computes claimed / remaining numbers (1..100) from JSON input.",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^9.39.0"
+  }
+}
