@@ -3,7 +3,8 @@
 // @namespace    http://example.com/
 // @version      1.0
 // @description  Paste JSON {"claimed":[...]} to see Number claimed, Number remaining and the remaining list (1..100).
-// @match        *://*/*
+// @match        https://wplace.samuelscheit.com/*
+// @match        https://wplace.live/*
 // @grant        none
 // @run-at       document-end
 // ==/UserScript==
@@ -12,23 +13,24 @@
     'use strict';
 
     const css = `
+  /* Dark mode styles */
   #crn-panel {
     position: fixed;
     right: 12px;
     bottom: 12px;
     width: 480px;
     max-width: calc(100vw - 24px);
-    background: #fff;
-    color: #111;
-    border: 1px solid #999;
+    background: #0b1220; /* very dark blue/gray */
+    color: #e6eef8; /* light text */
+    border: 1px solid rgba(255,255,255,0.06);
     border-radius: 6px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.7);
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     z-index: 999999;
   }
   #crn-panel header {
     padding: 8px 10px;
-    background: #2b6cb0;
+    background: linear-gradient(180deg,#1f6feb 0%, #174fc8 100%); /* blue header */
     color: #fff;
     font-weight: 600;
     display:flex;
@@ -39,11 +41,41 @@
     cursor: move;
   }
   #crn-panel .body { padding: 10px; }
-  #crn-panel textarea { width: 100%; box-sizing: border-box; height: 90px; resize: vertical; padding:6px; font-family: monospace; }
+  #crn-panel textarea {
+    width: 100%;
+    box-sizing: border-box;
+    height: 90px;
+    resize: vertical;
+    padding:6px;
+    font-family: monospace;
+    background: #071022;
+    color: #dbeafe;
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 4px;
+  }
   #crn-panel .controls { margin-top:8px; display:flex; gap:8px; }
-  #crn-panel button { padding:6px 10px; cursor:pointer; }
-  #crn-panel .counts { margin-top:8px; display:flex; gap:12px; }
-  #crn-panel pre { margin-top:8px; max-height: 160px; overflow:auto; background:#f7f7f7; padding:8px; border-radius:4px; }
+  #crn-panel button {
+    padding:6px 10px;
+    cursor:pointer;
+    background: #111827;
+    color: #e6eef8;
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 4px;
+    transition: background .12s ease, transform .06s ease;
+  }
+  #crn-panel button:hover { background: #0f1724; transform: translateY(-1px); }
+  #crn-panel .counts { margin-top:8px; display:flex; gap:12px; color:#cfe6ff; }
+  #crn-panel pre {
+    margin-top:8px;
+    max-height: 160px;
+    overflow:auto;
+    background:#051025;
+    padding:8px;
+    border-radius:4px;
+    color:#dbeafe;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  #crn-panel code { color: #93c5fd; background: transparent; }
   #crn-close { background:transparent; color:#fff; border:0; font-weight:700; cursor:pointer; }
   `;
 
