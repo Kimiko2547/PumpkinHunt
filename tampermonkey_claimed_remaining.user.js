@@ -97,8 +97,8 @@
       <div>Paste JSON input (format: <code>{"claimed":[...]}</code>) and click <strong>Process</strong>:</div>
       <textarea id="crn-input" placeholder='{"claimed":[19,39,99,...]}'></textarea>
       <div class="controls">
+        <button id="crn-import-page" title="Import visible page text (backend only)">Import page</button>
         <button id="crn-process">Process</button>
-        <button id="crn-empty">Use empty claimed set</button>
         <button id="crn-copy">Copy remaining to clipboard</button>
       </div>
       <div class="counts">
@@ -112,8 +112,8 @@
     document.body.appendChild(panel);
 
     const inputEl = panel.querySelector('#crn-input');
+    const btnImport = panel.querySelector('#crn-import-page');
     const btnProcess = panel.querySelector('#crn-process');
-    const btnEmpty = panel.querySelector('#crn-empty');
     const btnCopy = panel.querySelector('#crn-copy');
     const out = panel.querySelector('#crn-output');
     const lblClaimed = panel.querySelector('#crn-claimed');
@@ -161,8 +161,29 @@
         computeFromSet(claimed);
     }
 
+    btnImport.addEventListener('click', () => {
+        try {
+            if (location.origin !== 'https://backend.wplace.live') {
+                alert('Import only allowed on https://backend.wplace.live/');
+                return;
+            }
+            // Temporarily hide our overlay so its text is not included in the page text.
+            const prevDisplay = panel.style.display;
+            try {
+                panel.style.display = 'none';
+                const pageText = (document.body && (document.body.innerText || document.body.textContent)) || '';
+                inputEl.value = pageText.trim();
+                alert('Page text imported into the input box. Click Process to parse.');
+            } finally {
+                // restore the panel display to previous state
+                panel.style.display = prevDisplay;
+            }
+        } catch (e) {
+            alert('Failed to import page text: ' + (e && e.message));
+        }
+    });
+
     btnProcess.addEventListener('click', parseAndProcess);
-    btnEmpty.addEventListener('click', () => computeFromSet(new Set()));
     btnCopy.addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(out.textContent);
