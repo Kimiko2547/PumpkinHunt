@@ -5,6 +5,7 @@
 // @description  Paste JSON {"claimed":[...]} to see Number claimed, Number remaining and the remaining list (1..100).
 // @match        https://wplace.samuelscheit.com/*
 // @match        https://wplace.live/*
+// @match        https://backend.wplace.live/*
 // @grant        none
 // @run-at       document-end
 // ==/UserScript==
